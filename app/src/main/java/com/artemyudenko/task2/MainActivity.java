@@ -1,13 +1,9 @@
 package com.artemyudenko.task2;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,5 +17,21 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter(S_INTENT_FILTER);
         intentFilter.addCategory(CATEGORY);
         registerReceiver(new AddIntentReciever(), intentFilter);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        Intent previouse = getIntent();
+        int location = previouse.getIntExtra("LOCATION", 0);
+
+        if (location != 0) {
+            Intent i = new Intent();
+            i.putExtra("LOCATION", location);
+            i.setAction(S_INTENT_FILTER + 2);
+            i.addCategory(CATEGORY + 2);
+            sendBroadcast(i,"com.permissions.NOTI_CLICK");
+        }
     }
 }

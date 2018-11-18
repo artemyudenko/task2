@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.artemyudenko.task2">
 
+    <permission-group
+        android:name="com.permissions"
+        android:label="my permissions group" />
+
+    <permission
+        android:name="com.permissions.NOTI_CLICK"
+        android:label="my permission for receive intents"
+        android:permissionGroup="com.permissions"
+        android:protectionLevel="normal" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.artemyudenko.my_permissions.SHARE_INTENT" />
 
