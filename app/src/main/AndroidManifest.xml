@@ -3,7 +3,7 @@
     package="com.artemyudenko.task2">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="com.example.my_permissions.MY_PERMISSION" />
+    <uses-permission android:name="com.artemyudenko.my_permissions.SHARE_INTENT" />
 
     <application
         android:allowBackup="true"
