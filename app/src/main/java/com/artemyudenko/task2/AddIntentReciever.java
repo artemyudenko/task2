@@ -24,20 +24,6 @@ public class AddIntentReciever extends BroadcastReceiver {
 
     private void showNotification(Context context, String itemName) {
         final Resources res = context.getResources();
-
-        Intent mainMenuIntent = new Intent(context, MainActivity.class);
-        mainMenuIntent.putExtra("LOCATION", 1);
-
-        Intent edit = new Intent(context, MainActivity.class);
-        edit.putExtra("LOCATION", 2);
-
-        Intent list = new Intent(context, MainActivity.class);
-        list.putExtra("LOCATION", 3);
-
-        PendingIntent pendingIntent1 = PendingIntent.getActivity(context, 0, mainMenuIntent, 0);
-        PendingIntent pendingIntentEdit = PendingIntent.getActivity(context, 0, edit, 0);
-        PendingIntent pendingIntentList = PendingIntent.getActivity(context, 0, list, 0);
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("New item is added!")
@@ -46,16 +32,22 @@ public class AddIntentReciever extends BroadcastReceiver {
                 .addAction(
                         R.drawable.ic_action_stat_share,
                         res.getString(R.string.action_list),
-                        pendingIntentList)
+                        PendingIntent.getActivity(context,0, constructIntent(context,3), 0))
                 .addAction(
                         R.drawable.ic_action_stat_reply,
                         res.getString(R.string.action_edit),
-                        pendingIntentEdit)
+                        PendingIntent.getActivity(context,1, constructIntent(context,2), 0))
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent1);
+                .setContentIntent(PendingIntent.getActivity(context,2, constructIntent(context,1), 0));
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(0, mBuilder.build());
+    }
+
+    private Intent constructIntent(Context context, int location) {
+        Intent i = new Intent(context, MainActivity.class);
+        i.putExtra("LOCATION", location);
+        return i;
     }
 
     private void createNotificationChannel(Context context) {
