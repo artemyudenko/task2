@@ -5,10 +5,13 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import static com.artemyudenko.task2.Constants.LOCATION;
+
 public class MainActivity extends AppCompatActivity {
 
-    public static final String S_INTENT_FILTER = "sharedIntent";
-    public static final String CATEGORY = "sharedCat";
+    private AddIntentReciever addIntentReciever = new AddIntentReciever();
+    private static final String S_INTENT_FILTER = "sharedIntent";
+    private static final String CATEGORY = "sharedCat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         IntentFilter intentFilter = new IntentFilter(S_INTENT_FILTER);
         intentFilter.addCategory(CATEGORY);
-        registerReceiver(new AddIntentReciever(), intentFilter);
+        registerReceiver(addIntentReciever, intentFilter);
     }
 
     @Override
@@ -24,11 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         Intent previouse = getIntent();
-        int location = previouse.getIntExtra("LOCATION", 0);
-
+        int location = previouse.getIntExtra(LOCATION.getKey(), 0);
         if (location != 0) {
             Intent i = new Intent();
-            i.putExtra("LOCATION", location);
+            i.putExtra(LOCATION.getKey(), location);
             i.setAction(S_INTENT_FILTER + 2);
             i.addCategory(CATEGORY + 2);
             sendBroadcast(i,"com.permissions.NOTI_CLICK");

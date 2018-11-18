@@ -10,6 +10,9 @@ import android.content.res.Resources;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
+import static com.artemyudenko.task2.Constants.LOCATION;
+import static com.artemyudenko.task2.Constants.NAME;
+
 public class AddIntentReciever extends BroadcastReceiver {
 
     public static final String CHANNEL_ID = "myChannelId";
@@ -17,12 +20,12 @@ public class AddIntentReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String itemName = intent.getStringExtra("NAME");
-        createNotificationChannel(context);
-        showNotification(context, itemName);
+         createNotificationChannel(context);
+        showNotification(context, intent);
     }
 
-    private void showNotification(Context context, String itemName) {
+    private void showNotification(Context context, Intent intent) {
+        String itemName = intent.getStringExtra(NAME.getKey());
         final Resources res = context.getResources();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -32,11 +35,7 @@ public class AddIntentReciever extends BroadcastReceiver {
                 .addAction(
                         R.drawable.ic_action_stat_share,
                         res.getString(R.string.action_list),
-                        PendingIntent.getActivity(context,0, constructIntent(context,3), 0))
-                .addAction(
-                        R.drawable.ic_action_stat_reply,
-                        res.getString(R.string.action_edit),
-                        PendingIntent.getActivity(context,1, constructIntent(context,2), 0))
+                        PendingIntent.getActivity(context,0, constructIntent(context,2), 0))
                 .setAutoCancel(true)
                 .setContentIntent(PendingIntent.getActivity(context,2, constructIntent(context,1), 0));
 
@@ -46,7 +45,7 @@ public class AddIntentReciever extends BroadcastReceiver {
 
     private Intent constructIntent(Context context, int location) {
         Intent i = new Intent(context, MainActivity.class);
-        i.putExtra("LOCATION", location);
+        i.putExtra(LOCATION.getKey(), location);
         return i;
     }
 
